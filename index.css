@@ -120,3 +120,7 @@ img {
 .model-diagram {
 	width: 60%;
 }
+
+.center {
+	text-align: center;
+}

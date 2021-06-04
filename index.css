@@ -124,3 +124,11 @@ img {
 .center {
 	text-align: center;
 }
+
+.italic {
+	font-style: italic;
+}
+
+li {
+	padding-bottom: 1%;
+}

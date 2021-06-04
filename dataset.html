@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+ 	<head>
+		<title>Object Detection for Autonomous Vehicles</title>
+		<link rel="stylesheet" href="index.css">
+	</head>
+  
+	<body>
+		<div class="container">
+			<div class="left-side">
+				<div class="left-container">
+					<div class="basic-info">
+						<h3>CSE 455 Computer Vision</h3>
+						<h4>Erica Eaton</h4>
+					</div>
+					<div class="links">
+						<p><a href="index.html">Overview</a></p>
+						<p class="selected"><a href="dataset.html">Dataset and Data Processing</a></p>
+					</div>
+				</div>
+			</div>
+			<div class="main-content">
+				<h1>Object Detection for Autonomous Vehicles</h1>
+				<h2 class="first-h2">Dataset and Data Processing</h2>
+				<p>
+					The dataset for this project is the Berkeley DeepDrive object detection task dataset [2]. This
+					 dataset contains 100,000 images, each extracted from a video taken while driving a vehicle and
+					 from the perspective of the driver, looking through the windshield of the vehicle. The images
+					 are labeled with bounding boxes and each object is from 1 of 13 classes: pedestrian, rider (i.e.,
+					 motorcycle or bicycle rider), car, truck, bus, train, motorcycle, bicycle, traffic light, traffic sign,
+					 other person, other vehicle, or trailer. Although there are supposedly only 10 classes according to the
+					 dataset description, when processing the dataset, I discovered images in the dataset with bounding boxes
+					 labeled as other person, other vehicle, or trailer, which were not part of the original 10 classes.
+					<br />
+					<br />
+					Since bounding box information for images in the test set was not provided, I only use the images in the
+					 training and validation sets, totaling 80,000 images. I then split these 80,000 images into 70% train, 10%
+					 validation, and 20% test.
+					<br />
+					<br />
+					The label files for the dataset are 2 JSON files, one for the original training set and one for the original
+					 validation set. Each JSON file contains a list of JSON objects, where each of these JSON objects corresponds
+					 to an image. A sample JSON object is below:
+					<br />
+					<pre>
+						{
+						  "name": "b1c81faa-3df17267.jpg",
+						  "attributes": {
+						    "weather": "clear",
+						    "timeofday": "night",
+						    "scene": "highway"
+						  },
+						  "timestamp": 10000,
+						  "labels": [
+						    {
+						      "id": "35",
+						      "attributes": {
+						        "occluded": false,
+						        "truncated": false,
+						        "trafficLightColor": "NA"
+						      },
+						      "category": "car",
+						      "box2d": {
+						        "x1": 1027.299139,
+						        "y1": 290.47426,
+						        "x2": 1052.536255,
+						        "y2": 306.804159
+						      }
+						    }
+						  ]
+						}
+					</pre>
+					In the JSON object above, "name" is the name of the image, "timestamp" indicates the frame number of
+					 the video from which the image was taken, and "labels" is a list of bounding boxes, where "category"
+					 is the object class and "box2d" contains the coordinates for the bounding box ((x1, y1) is the upper
+					 left corner of the box and (x2, y2) is the lower right corner of the box).
+					<br />
+					<br />
+					When processing the label files for the dataset, I found that some images in the original training and
+					 validation sets were not labeled. This does not necessarily mean these images have no objects, as the
+					 label files did include images with no bounding boxes. Since I did not know if the images with no
+					 corresponding entry in the label files contain objects or not and I wanted to keep the labeling strategy
+					 consistent among all images, I chose to exclude these images. This resulted in 55,908 images in the training
+					 set, 7,985 images in the validation set, and 15,970 images in the test set, for a total of 79,863 images. There
+					 are a total of 1,460,825 objects in these 79,863 images or an average of about 18 objects per image, as well as
+					 10 images that contain no objects. The number of objects for each class across images is: 1) 105,584 for
+					 pedestrian; 2) 5,218 for rider; 3) 803,540 for car; 4) 32,135 for truck; 5) 13,637 for bus; 6) 143 for train;
+					 7) 3,483 for motorcycle; 8) 8,163 for bicycle; 9) 214,755 for traffic light; 10) 272,994 for traffic sign; 11)
+					 211 for other person; 12) 889 for other vehicle; and 13) 73 for trailer.
+					<br />
+					<br />
+					Both the Faster R-CNN (for PyTorch) and YOLO models, described in more detail on the models page, required placing
+					 the labels for each image into a different format. For Faster R-CNN, the label for each image is a dictionary with
+					 the following keys [3]:
+					<ul>
+						<li>
+							image_id: unique ID for the image
+						</li>
+						<li>
+							labels: tensor of integers corresponding to the class for each bounding box in the image
+						</li>
+						<li>
+							area: tensor containing the area for each bounding box
+						</li>
+						<li>
+							iscrowd: tensor containing 1s and 0s, corresponding to whether each bounding box contains a
+							 crowd (1) or not (0) (for all images, I set the value of iscrowd to a tensor of all zeros)
+						</li>
+						<li>
+							boxes: tensor where each element is the coordinates for a bounding box in the image in the form
+							 [x1, y1, x2, y2], where 0 <= x1 < x2 < width of image and 0 <= y1 < y2 < height of image. It is
+							 important that for every bounding box, x1 (not equal) x2 and y1 (not equal) y2, otherwise the
+							 bounding box will have zero area causing a call to torch.log to return log(0), which is infinity.
+						</li>
+					</ul>
+					Another requirement of Faster R-CNN is that all images have at least one bounding box. However, there are images
+					 in the dataset that have no bounding boxes. One solution to this problem would be to remove images in the dataset
+					 with no bounding boxes, but then in practice, the model’s predictions for images with no objects would always be
+					 wrong since the model would always predict there is at least one object in the image. Instead, I create a new
+					 class called "background", and for the images in the dataset that have no bounding boxes, I add a bounding box
+					 that is the same size as the image and is labeled as "background".
+					<br />
+					<br />
+					For YOLO, each image must have a corresponding txt file of the same name (i.e., for image "abc.jpg", there must
+					 be a file named "abc.txt"). In each txt file, there is one line of the form "<object class> <x center> <y center>
+					 <width> <height>" for each bounding box in the image, where "object class" is the class for that object, "x
+					 center" and "y center" are the x and y coordinates of the center of the bounding box relative to the size of the
+					 image (x center = absolute x coordinate for the center of the bounding box / image width, and y center = absolute
+					 y coordinate for the center of the bounding box / image height), and "width" and "height" are the width and height
+					 of the bounding box relative to the size of the image (width = absolute width of the bounding box / image width,
+					 and height = absolute height of the bounding box / image height). If there are no bounding boxes in the image,
+					 the txt file is empty. Unlike Faster R-CNN, YOLO can automatically handle images with no bounding boxes.
+					<br />
+					<br />
+					I implemented all pre-processing described above.
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

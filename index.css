@@ -1,0 +1,113 @@
+.container {
+	display: flex;
+	flex-direction: row;
+	top: 0;
+	left: 0;
+	position: absolute;
+	min-height: 100%;
+	overflow: hidden;
+	width: 100%;
+}
+
+.left-side {
+	width: 17em;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+	height: auto;
+}
+
+.container, .left-side, .basic-info, .links, .main-content, body {
+	padding: 0;
+	margin: 0;
+}
+
+.basic-info {
+	background-color: #2685bf;
+	color: #fafafa;
+	padding: 2%;
+}
+
+.basic-info * {
+	text-align: center;
+	font-weight: 500;
+}
+
+.links {
+	background-color: #323333;
+	height: 100%;
+	flex-grow: 1;
+	padding-top: 2%;
+	padding-bottom: 2%;
+}
+
+a {
+	text-decoration: none;
+}
+
+.links a {
+	color: #d7d8d9;
+	display: inline-block;
+	width: 100%;
+	padding-left: 5%;
+	padding-top: 1.5%;
+	padding-bottom: 1.5%;
+}
+
+.links p:hover:not(.selected) {
+	background-color: #8b8b8c;
+}
+
+body {
+	background-color: #fafafa;
+	font-family: Arial;
+}
+
+.main-content {
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-bottom: 10%;
+	flex: 1;
+}
+
+.main-content * {
+	color: #323333;
+}
+
+.main-content h1 {
+	text-align: center;
+}
+
+.first-h2 {
+	margin-top: 8%;
+	margin-bottom: 0;
+}
+
+.second-h2 {
+	margin-top: 5%;
+	margin-bottom: 3%;
+}
+
+.selected a {
+	color: #323333;
+}
+
+.selected {
+	background-color: #fafafa;
+}
+
+.left-container {
+	position: fixed;
+	height: 100%;
+}
+
+.left-container:hover {
+	overflow-y: scroll;
+}
+
+.decorate {
+	color: #2784b0;
+	// color: #23779e;
+}

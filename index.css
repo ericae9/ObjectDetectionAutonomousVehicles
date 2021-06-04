@@ -110,3 +110,13 @@ body {
 .decorate {
 	color: #2784b0;
 }
+
+img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.model-diagram {
+	width: 60%;
+}

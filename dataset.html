@@ -15,6 +15,7 @@
 					<div class="links">
 						<p><a href="index.html">Overview</a></p>
 						<p class="selected"><a href="dataset.html">Dataset and Data Processing</a></p>
+						<p><a href="models.html">Models</a></p>
 					</div>
 				</div>
 			</div>
@@ -88,7 +89,7 @@
 					 211 for other person; 12) 889 for other vehicle; and 13) 73 for trailer.
 					<br />
 					<br />
-					Both the Faster R-CNN (for PyTorch) and YOLO models, described in more detail on the models page, required placing
+					Both the Faster R-CNN (for PyTorch) and YOLOv4 models, described in more detail on the models page, required placing
 					 the labels for each image into a different format. For Faster R-CNN, the label for each image is a dictionary with
 					 the following keys [3]:
 					<ul>
@@ -120,7 +121,7 @@
 					 that is the same size as the image and is labeled as "background".
 					<br />
 					<br />
-					For YOLO, each image must have a corresponding txt file of the same name (i.e., for image "abc.jpg", there must
+					For YOLOv4, each image must have a corresponding txt file of the same name (i.e., for image "abc.jpg", there must
 					 be a file named "abc.txt"). In each txt file, there is one line of the form "<object class> <x center> <y center>
 					 <width> <height>" for each bounding box in the image, where "object class" is the class for that object, "x
 					 center" and "y center" are the x and y coordinates of the center of the bounding box relative to the size of the
@@ -128,7 +129,7 @@
 					 y coordinate for the center of the bounding box / image height), and "width" and "height" are the width and height
 					 of the bounding box relative to the size of the image (width = absolute width of the bounding box / image width,
 					 and height = absolute height of the bounding box / image height). If there are no bounding boxes in the image,
-					 the txt file is empty. Unlike Faster R-CNN, YOLO can automatically handle images with no bounding boxes.
+					 the txt file is empty. Unlike Faster R-CNN, YOLOv4 can automatically handle images with no bounding boxes.
 					<br />
 					<br />
 					I implemented all pre-processing described above.

@@ -29,7 +29,8 @@
 					I fine-tuned each model on the Berkeley DeepDrive object detection dataset and experimented with different
 					 hyperparameter settings. For each model, I use the Adam optimizer. For Faster R-CNN, I experiment with 2
 					 different backbones, ResNet-50 and MobileNetV3, using the corresponding PyTorch models that are already
-					 pre-trained on COCO [11]. I follow the PyTorch "Torchvision Object Detection Finetuning Tutorial" [3] to
+					 pre-trained on COCO <a href="http://pytorch.org/vision/stable/models.html#object-detection-instance-segmentation-and-person-keypoint-detection" target="_blank">[11]</a>.
+					 I follow the PyTorch "Torchvision Object Detection Finetuning Tutorial" <a href="https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html" target="_blank">[3]</a> to
 					 fine-tune Faster R-CNN, but modify the code to save the best model, according to mAP score on the validation
 					 set, store the loss on the training set, compute loss on the validation set, and use a different learning rate
 					 scheduler. Since there are nearly 56,000 images in the training set, I update the learning rate during an epoch
@@ -38,14 +39,14 @@
 					 Google Colaboratory was 9.
 					<br />
 					<br />
-					For YOLO, I use the pre-trained YOLOv4 model from [12] and follow the instructions in the README to modify certain
+					For YOLO, I use the pre-trained YOLOv4 model from <a href="https://github.com/AlexeyAB/darknet" target="_blank">[12]</a> and follow the instructions in the README to modify certain
 					 files in order to fine-tune on the Berkeley DeepDrive object detection dataset. Specifically, I modify the YOLOv4
 					 cfg file by changing the number of classes to 13 and the number of filters in the convolutional layer before each
 					 YOLO layer to 54, which is (# of classes + 5) * 3. Further, I modify the schedule for decreasing the learning rate.
 					 Originally, the learning rate was multiplied by 0.5 after completing 80% and 90% of the iterations, but I changed
 					 this schedule to multiply the learning rate by 0.95 after about every 1 or 2 epochs, as I thought gradually
 					 decreasing the learning rate over epochs rather than only near the end of training would help the model learn
-					 better. I also create 5 new files, following the instructions in [12]: "obj.names" contains the name of each
+					 better. I also create 5 new files, following the instructions in <a href="https://github.com/AlexeyAB/darknet" target="_blank">[12]</a>: "obj.names" contains the name of each
 					 object class; "obj.data" has the number of classes and the location for the dataset, "obj.names" file, and where
 					 to store the model weights; and "train.txt", "val.txt", and "test.txt" list the locations for images in the
 					 training, validation, and test sets, respectively. Last, I create one txt label file for each image, as previously

@@ -26,7 +26,8 @@
 				<h1>Object Detection for Autonomous Vehicles</h1>
 				<h2 class="first-h2">Dataset and Data Processing</h2>
 				<p>
-					The dataset for this project is the Berkeley DeepDrive object detection task dataset [2]. This
+					The dataset for this project is the Berkeley DeepDrive object detection task dataset
+					 <a href="https://arxiv.org/abs/1805.04687" target="_blank">[2]</a>. This
 					 dataset contains 100,000 images, each extracted from a video taken while driving a vehicle and
 					 from the perspective of the driver, looking through the windshield of the vehicle. The images
 					 are labeled with bounding boxes and each object is from 1 of 13 classes: pedestrian, rider (i.e.,
@@ -94,7 +95,8 @@
 					<br />
 					Both the Faster R-CNN (for PyTorch) and YOLOv4 models, described in more detail on the <a class="decorate" href="models.html">models page</a>,
 					 required placing the labels for each image into a different format. For Faster R-CNN, the label for each image is
-					 a dictionary with the following keys [3]:
+					 a dictionary with the following keys
+					 <a href="https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html" target="_blank">[3]</a>:
 					<ul>
 						<li>
 							image_id: unique ID for the image

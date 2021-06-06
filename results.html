@@ -26,7 +26,292 @@
 				<h1>Object Detection for Autonomous Vehicles</h1>
 				<h2 class="first-h2">Results</h2>
 				<p>
-					TO DO: Add results here
+					Results, in terms of mAP score on the validation set, for the 3 types of models I tried (Faster R-CNN with
+					 ResNet-50 backbone, Faster R-CNN with MobileNetV3 backbone, and YOLOv4) when experimenting with batch size
+					 and initial learning rate are below.
+				</p>
+				<table>
+					<caption>Faster R-CNN with ResNet-50 Backbone</caption>
+					<tr>
+						<th>Batch Size</th>
+						<th>Initial Learning Rate</th>
+						<th>mAP on Val Set</th>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td>0.001</td>
+						<td>30.7%</td>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td>0.0002</td>
+						<td>38.0%</td>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td>0.00005</td>
+						<td>40.8%</td>
+					</tr>
+				</table>
+				<table>
+					<caption>Faster R-CNN with MobileNetV3 Backbone</caption>
+					<tr>
+						<th>Batch Size</th>
+						<th>Initial Learning Rate</th>
+						<th>mAP on Val Set</th>
+					</tr>
+					<tr>
+						<td>36</td>
+						<td>0.001</td>
+						<td>25.4%</td>
+					</tr>
+					<tr>
+						<td>36</td>
+						<td>0.0002</td>
+						<td>27.0%</td>
+					</tr>
+					<tr>
+						<td>36</td>
+						<td>0.00005</td>
+						<td>27.3%</td>
+					</tr>
+					<tr>
+						<td>18</td>
+						<td>0.0002</td>
+						<td>26.7%</td>
+					</tr>
+					<tr>
+						<td>18</td>
+						<td>0.00005</td>
+						<td>26.7%</td>
+					</tr>
+					<tr>
+						<td>18</td>
+						<td>0.00001</td>
+						<td>23.9%</td>
+					</tr>
+				</table>
+				<table>
+					<caption>YOLOv4</caption>
+					<tr>
+						<th>Batch Size</th>
+						<th>Initial Learning Rate</th>
+						<th>mAP on Val Set</th>
+					</tr>
+					<tr>
+						<td>64</td>
+						<td>0.001</td>
+						<td>43.35%</td>
+					</tr>
+					<tr>
+						<td>64</td>
+						<td>0.0005</td>
+						<td>45.77%</td>
+					</tr>
+					<tr>
+						<td>64</td>
+						<td>0.0001</td>
+						<td>44.05%</td>
+					</tr>
+					<tr>
+						<td>32</td>
+						<td>0.0001</td>
+						<td>45.09%</td>
+					</tr>
+					<tr>
+						<td>32</td>
+						<td>0.00005</td>
+						<td>42.92%</td>
+					</tr>
+				</table>
+				<p>
+					For Faster R-CNN, a learning rate of 0.00005 yields the highest mAP score on the validation set when using either
+					 the ResNet-50 or MobileNetV3 backbone. It comes as no surprise that a lower learning rate yielded a higher mAP
+					 score, as I used a pretrained Faster R-CNN model, so using too high of a learning rate initially could change the
+					 model’s weights too much in the first few epochs of finetuning. However, YOLOv4 yielded higher mAP scores on the
+					 validation set when using a higher learning rate than 0.00005, specifically a learning rate of 0.0005 with a batch
+					 size of 64 and 0.0001 with a batch size of 32.
+					<br />
+					<br />
+					In terms of batch size, with a ResNet-50 backbone for Faster R-CNN, I was restricted to using a batch size of 9 due
+					 to GPU memory limitations. However, with MobileNetV3, a higher batch size, 36 instead of 18, resulted in a higher
+					 mAP score on the validation set when using lower learning rates. Using a batch size of 64 instead of 32 also
+					 resulted in the highest mAP score out of the YOLOv4 experiments when using a learning rate of 0.0005 with a batch
+					 size of 64. It makes sense that a higher batch size, up to a point, would yield better results, as the gradient
+					 step is averaged over more samples.
+					<br />
+					<br />
+					In addition to mAP score, time to finetune and evaluate the models is an important consideration. However, since
+					 I ran all experiments on Google Colaboratory, it is difficult to compare the models on finetuning and evaluation
+					 time, as the amount of resources allocated is unpredictable, so even finetuning the same model multiple times
+					 took quite different amounts of time to finetune each time.
+					<br />
+					<br />
+					Based on the mAP scores on the validation set in the tables above, the best performing Faster R-CNN model is with a
+					 ResNet-50 backbone, batch size of 9, and learning rate of 0.00005 and the best performing YOLOv4 model is with a
+					 batch size of 64 and learning rate of 0.0005. The results of evaluating these two models on the test set is below.
+				</p>
+				<table>
+					<caption>mAP on Test Set for Best Performing Models</caption>
+					<tr>
+						<th>Model</th>
+						<th>mAP on Test Set</th>
+					</tr>
+					<tr>
+						<td>Faster R-CNN with ResNet-50</td>
+						<td>37.6%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>44.27%</td>
+					</tr>
+				</table>
+				<table>
+					<caption>AP on each Object Class for Best Performing Models</caption>
+					<tr>
+						<th>Object Class</th>
+						<th>Model</th>
+						<th>AP on Test Set</th>
+					</tr>
+					<tr>
+						<td rowspan="2">pedestrian</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>64.5%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>62.97%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">rider</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>55.5%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>49.98%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">car</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>80.4%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>80.93%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">truck</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>65.6%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>63.04%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">bus</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>68.2%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>64.83%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">train</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>0%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>2.16%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">motorcycle</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>50.1%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>49.69%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">bicycle</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>54.6%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>58.12%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">traffic light</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>63.3%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>60.23%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">traffic sign</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>68.7%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>73.04%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">other person</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>0%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>0.26%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">other vehicle</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>17.6%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>9.14%</td>
+					</tr>
+					<tr>
+						<td rowspan="2">trailer</td>
+						<td>Faster R-CNN with RestNet-50</td>
+						<td>0%</td>
+					</tr>
+					<tr>
+						<td>YOLOv4</td>
+						<td>1.12%</td>
+					</tr>
+				</table>
+				<p>
+					As expected, YOLOv4 outperforms Faster R-CNN on the test set, achieving about 7% higher mAP score on the test
+					 set, which is in line with comparisons of these two models on datasets like COCO, for example
+					 <a href="https://arxiv.org/abs/2004.10934" target="_blank">[10]</a>. In terms
+					 of AP for each object class, YOLOv4 and Faster R-CNN achieve quite similar scores for each object class,
+					 performing fairly well on most classes, except train, other person, other vehicle, and trailer. For both models,
+					 the AP for each object class seems to roughly correlate with the number of times an object from that class appears
+					 in images in the dataset. For example, the object classes with the lowest number of appearances in the dataset,
+					 each appearing less than 1,000 times, are train, other person, other vehicle, and trailer, which are the same
+					 classes that both models performed the worst on. Further, both models performed the best on detecting cars, which
+					 appear in the dataset far more than any other object class, specifically 803,540 times. This pattern makes sense,
+					 as the model can learn to better detect an object when it has more examples of that object, or in other words,
+					 that object occurs more often in the dataset. Augmenting the Berkeley DeepDrive dataset with more images for
+					 classes like trailer or train, for example, which appear in very few images, by either adding new images or
+					 transformations of the existing images in the dataset with these types of objects, could help improve both models’
+					 ability to detect these types of objects.
+					<br />
+					<br />
+					Overall, I learned a lot while doing this project. I gained a better understanding of how different object
+					 detection models work, how to finetune multiple object detection models, and evaluation of object detection
+					 (i.e., mAP, IoU, etc.).
 				</p>
 			</div>
 		</div>

@@ -147,3 +147,22 @@ video {
 	margin-right: auto;
 	margin-bottom: 10%;
 }
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	width: 70%;
+}
+
+table, th, td {
+	border: 0.1em solid black;
+	border-collapse: collapse;
+	padding: 1%;
+	text-align: center;
+}
+
+caption {
+	font-weight: bold;
+}
